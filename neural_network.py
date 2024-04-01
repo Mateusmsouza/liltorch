@@ -13,6 +13,9 @@ class NeuralNetwork:
         self.weights_hidden_output = [random.uniform(-1, 1) for _ in range(hidden_size)]
         self.bias_hidden = [random.uniform(-1, 1) for _ in range(hidden_size)]
         self.bias_output = random.uniform(-1, 1)
+
+        print(f"input {self.weights_input_hidden}")
+        print(f"ouput {self.weights_hidden_output}")
         
     def sigmoid(self, x):
         return 1 / (1 + math.exp(-x))
