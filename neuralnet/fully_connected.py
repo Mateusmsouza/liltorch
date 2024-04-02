@@ -15,7 +15,6 @@ class FullyConnectedLayer(Layer):
     def forward(self, input):
         """ apply input * weigths + bias"""
         self.input = input
-        #TODO implement dot product into pandas like interface abstraction
-        self.output = add(dot(self.weights, self.input), self.bias)
+        self.output = add(dot(self.input, self.weights), self.bias)
         return self.output
 

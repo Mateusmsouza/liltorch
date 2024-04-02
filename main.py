@@ -1,7 +1,6 @@
 from neuralnet.fully_connected import FullyConnectedLayer
 
 if __name__ == "__main__":
-    data = [[1, 3, 4],
-            [2, 6, 8]]
-    fc = FullyConnectedLayer(3, 2)
-    print(fc.forward(data))
+    x_train = [[[0,0]], [[0,1]], [[1,0]], [[1,1]]]
+    fc = FullyConnectedLayer(2, 3)
+    print(fc.forward(x_train[0]))
