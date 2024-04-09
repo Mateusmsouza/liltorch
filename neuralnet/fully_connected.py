@@ -18,3 +18,5 @@ class FullyConnectedLayer(Layer):
         self.output = add(dot(self.input, self.weights), self.bias)
         return self.output
 
+    def backward(self, output, lr):
+        
