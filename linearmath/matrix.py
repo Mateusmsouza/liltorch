@@ -20,3 +20,32 @@ def add(a, b):
         raise ValueError(f"Matrices cannot be added, dimensions don't match.\n{a}\n{b}")
     result = [[a[i][j] + b[i][j] for j in range(len(a[0]))] for i in range(len(a))]
     return result
+
+def subtract(matrix1, matrix2):
+    if len(matrix1) != len(matrix2) or len(matrix1[0]) != len(matrix2[0]):
+        raise ValueError("Matrices must have the same dimensions for subtraction.")
+    
+    result = []
+    for i in range(len(matrix1)):
+        row = []
+        for j in range(len(matrix1[0])):
+            row.append(matrix1[i][j] - matrix2[i][j])
+        result.append(row)
+    return result
+
+def transpose(matrix):
+    if isinstance(matrix[0], list):  # 2D matrix
+        return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
+    elif isinstance(matrix[0], (list, tuple)):  # 3D matrix
+        transposed_matrix = []
+        for i in range(len(matrix[0])):
+            layer = []
+            for j in range(len(matrix)):
+                row = []
+                for k in range(len(matrix[j])):
+                    row.append(matrix[j][k][i])
+                layer.append(row)
+            transposed_matrix.append(layer)
+        return transposed_matrix
+    else:
+        raise ValueError("Unsupported matrix type")
