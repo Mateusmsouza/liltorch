@@ -1,6 +1,10 @@
-def mse(y_true, y_pred):
-    if len(y_true) != len(y_pred):
+import numpy as np
+
+
+def mse(y_true: np.ndarray, y_pred: np.ndarray):
+    if y_true.shape != y_pred.shape:
         raise ValueError("y_true and y_pred must have the same length.")
-    
-    squared_errors = [(true - pred) ** 2 for true, pred in zip(y_true, y_pred)]
-    return sum(squared_errors) / len(y_true)
+    return np.mean(np.power(y_true-y_pred, 2));
+
+def mse_prime(y_true, y_pred):
+    return 2*(y_pred-y_true)/y_true.size;
