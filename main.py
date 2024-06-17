@@ -7,21 +7,7 @@ from neuralnet.loss import mse, mse_prime
 
 if __name__ == "__main__":
     lr = 0.1
-    epochs = 10
-    # x_train = [
-    #     [[0,0]], [[0,1]], [[1,0]], [[1,1]]
-    #     ]
-    # y_test = [
-    #     [[0]], [[1]], [[1]], [[0]]
-    # ]
-    # x_train = np.array([
-    #     [[1]], [[2]], [[4]], [[8]]
-    # ])
-
-    # y_test = np.array([
-    #     [2], [4], [8], [16]
-    # ])
-
+    epochs = 1000
     x_train = np.array([[[0,0]], [[0,1]], [[1,0]], [[1,1]]])
     y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
 
@@ -43,14 +29,14 @@ if __name__ == "__main__":
             for layer in layers:
                 sample = layer.forward(sample)
 
-            epoch_loss += mse(sample, target)
+            epoch_loss += mse(target, sample)
 
             # backward pass
-            error = mse_prime(sample, target)
+            error = mse_prime(target, sample)
             for layer in reversed(layers):
-                layer.backward(error, lr)
+                error = layer.backward(error, lr)
 
-        print(f'Epoch {i} -> Average loss {epoch_loss/len(x_train)}')
+        print(f'Epoch {epoch} -> Average loss {epoch_loss/len(x_train)}')
 
     # output = fc.forward(x_train[0])
 
