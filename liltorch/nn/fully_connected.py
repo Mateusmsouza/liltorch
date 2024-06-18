@@ -2,9 +2,8 @@ import random
 
 import numpy as np
 
-from linearmath.matrix import dot, add, transpose, subtract
-from neuralnet.layer import Layer
-from neuralnet.loss import mse
+from liltorch.nn.layer import Layer
+from liltorch.nn.loss import mse
 
 
 class FullyConnectedLayer(Layer):

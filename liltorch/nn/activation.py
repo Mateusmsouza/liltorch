@@ -1,6 +1,6 @@
 import numpy as np
 
-from neuralnet.layer import Layer
+from liltorch.nn.layer import Layer
 
 
 class ActivationLayerTanh(Layer):

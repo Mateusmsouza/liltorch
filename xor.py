@@ -1,8 +1,9 @@
 import numpy as np
 
-from neuralnet.fully_connected import FullyConnectedLayer
-from neuralnet.activation import ActivationLayerTanh
-from neuralnet.loss import mse, mse_prime
+from liltorch.nn.fully_connected import FullyConnectedLayer
+from liltorch.nn.activation import ActivationLayerTanh
+from liltorch.nn.loss import mse, mse_prime
+from liltorch.nn.network import Network
 
 
 if __name__ == "__main__":
@@ -11,12 +12,11 @@ if __name__ == "__main__":
     x_train = np.array([[[0,0]], [[0,1]], [[1,0]], [[1,1]]])
     y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
 
-    layers = [
-        FullyConnectedLayer(2, 3),
-        ActivationLayerTanh(),
-        FullyConnectedLayer(3, 1),
-        ActivationLayerTanh(),
-    ]
+    model = Network(lr=lr)
+    model.add(FullyConnectedLayer(2, 3))
+    model.add(ActivationLayerTanh())
+    model.add(FullyConnectedLayer(3, 1))
+    model.add(ActivationLayerTanh())
 
     for epoch in range(epochs):
         epoch_loss = 0
@@ -25,16 +25,12 @@ if __name__ == "__main__":
             target = y_train[i]
 
             # forward
-            # passing the sample through all neuralnet layers
-            for layer in layers:
-                sample = layer.forward(sample)
-
-            epoch_loss += mse(target, sample)
+            output = model.forward(sample)
+            epoch_loss += mse(target, output)
 
             # backward pass
-            error = mse_prime(target, sample)
-            for layer in reversed(layers):
-                error = layer.backward(error, lr)
+            error = mse_prime(target, output)
+            model.backward(error)
 
         print(f'Epoch {epoch} -> Average loss {epoch_loss/len(x_train)}')
 
