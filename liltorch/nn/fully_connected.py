@@ -3,7 +3,6 @@ import random
 import numpy as np
 
 from liltorch.nn.layer import Layer
-from liltorch.nn.loss import mse
 
 
 class FullyConnectedLayer(Layer):
