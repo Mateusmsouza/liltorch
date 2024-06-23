@@ -8,7 +8,9 @@ from liltorch.nn.layer import Layer
 class FullyConnectedLayer(Layer):
 
     def __init__(self, input_size, output_size):
-        self.weights = np.random.rand(input_size, output_size) - 0.5
+        #TODO why pytorch has this different implementation?
+        #self.weights = np.random.rand(input_size, output_size) - 0.5
+        self.weights = np.random.rand(output_size, input_size) - 0.5
         self.bias = np.random.rand(1, output_size) - 0.5
 
     def forward(self, input_data):
