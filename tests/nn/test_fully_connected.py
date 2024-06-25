@@ -12,5 +12,5 @@ def test_fc_forward():
     weights = fc.weights
     bias = fc.bias
     fake_data = np.random.rand(1, 2)
-    expected = np.dot(fake_data, weights.T) + bias
+    expected = np.dot(fake_data, weights) + bias
     assert expected == fc.forward(fake_data)
