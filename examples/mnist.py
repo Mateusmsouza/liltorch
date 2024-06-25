@@ -16,6 +16,7 @@ import numpy as np
 # load MNIST from server
 lr = 0.1
 epochs = 10
+bath_size = 16
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 x_train = x_train.reshape(x_train.shape[0], 1, 28*28)
