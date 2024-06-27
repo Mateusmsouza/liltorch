@@ -1,8 +1,3 @@
-'''
-for this file you may need to install Keras to easily load MNIST dataset.
-
-pip install keras tensorflow
-'''
 from keras.datasets import mnist
 from keras.utils import to_categorical
 
@@ -15,16 +10,15 @@ import numpy as np
 
 # load MNIST from server
 lr = 0.1
-epochs = 5
-batch_size = 16
+epochs = 10
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-x_train = x_train.reshape(x_train.shape[0], 28*28)
+x_train = x_train.reshape(x_train.shape[0], 1, 28*28)
 x_train = x_train.astype('float32')
 x_train /= 255
 y_train = to_categorical(y_train)
 
-x_test = x_test.reshape(x_test.shape[0], 28*28)
+x_test = x_test.reshape(x_test.shape[0], 1, 28*28)
 x_test = x_test.astype('float32')
 x_test /= 255
 y_test = to_categorical(y_test)
@@ -43,42 +37,29 @@ model.add(ActivationLayerTanh())
 for epoch in range(epochs):
     epoch_loss = 0
     dataset_size = len(x_train)
-    batch_begin = 0
-    batch_end = batch_size - 1
-    while batch_begin < dataset_size:
-        data = x_train[batch_begin:batch_end]
-        target = y_train[batch_begin:batch_end]
-        #print(f"batch from {batch_begin} to {batch_end}")
+    for i in range(dataset_size):
+        sample = x_train[i]
+        target = np.expand_dims(y_train[i], axis=0)
 
         # forward
-        output = model.forward(data)
+        output = model.forward(sample)
         epoch_loss += mse_loss(target, output)
 
         # backward pass
         error = mse_grad(target, output)
         model.backward(error)
 
-        batch_begin = batch_end
-        batch_end += batch_size
-        batch_end = min(dataset_size, batch_end)
-
     print(f'Epoch {epoch} -> Average loss {epoch_loss/len(x_train)}')
 
 # testing
 correct = 0
-dataset_size = len(x_test)
-batch_begin = 0
-batch_end = batch_size - 1
+total = 0
+for i in range(len(x_test)):
+    sample = x_test[i]
+    target = np.expand_dims(y_test[i], axis=0)
 
-while batch_begin < dataset_size -1:
-    data = x_test[batch_begin:batch_end]
-    target = y_test[batch_begin:batch_end]
-    #print(f"batch from {batch_begin} to {batch_end}")
-    output = model.forward(data)
-    correct += np.sum((np.argmax(output, axis=1) == np.argmax(target)))
+    output = model.forward(sample)
 
-    batch_begin = batch_end
-    batch_end += batch_size
-    batch_end = min(dataset_size, batch_end)
-
-print(f'Test Accuracy: {correct/dataset_size}')
+    correct += int(np.argmax(output) == np.argmax(target))
+    total += 1
+print(f'Test Accuracy: {correct/total}')
