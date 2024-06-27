@@ -15,8 +15,8 @@ import numpy as np
 
 # load MNIST from server
 lr = 0.1
-epochs = 10
-batch_size = 16
+epochs = 15
+batch_size = 1
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 x_train = x_train.reshape(x_train.shape[0], 28*28)
@@ -65,7 +65,6 @@ for epoch in range(epochs):
 
 # testing
 correct = 0
-total = 0
 dataset_size = len(x_test)
 batch_begin = 0
 batch_end = batch_size - 1
@@ -75,15 +74,10 @@ while batch_begin < dataset_size -1:
     target = y_test[batch_begin:batch_end]
 
     output = model.forward(data)
-
-    correct += np.all(np.array(output) == np.array(target), axis=1).sum()
-    #int(np.argmax(output) == np.argmax(target))
-    total += 1
+    correct += np.sum((np.argmax(output, axis=1) == np.argmax(target)))
 
     batch_begin += batch_size
     batch_end += batch_size
     batch_end = min(dataset_size, batch_end)
 
-
-print(f"correct {correct}")
-print(f'Test Accuracy: {correct/total}')
+print(f'Test Accuracy: {correct/dataset_size}')
