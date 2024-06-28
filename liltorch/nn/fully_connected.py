@@ -22,5 +22,5 @@ class FullyConnectedLayer(Layer):
         weights_error = np.dot(self.input.T, output_error)
 
         self.weights -= lr * weights_error
-        self.bias -= lr * output_error
+        self.bias -= lr * np.sum(output_error, axis=0, keepdims=True)
         return input_error

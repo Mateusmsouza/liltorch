@@ -2,13 +2,13 @@ import numpy as np
 
 from liltorch.nn.fully_connected import FullyConnectedLayer
 from liltorch.nn.activation import ActivationLayerTanh
-from liltorch.nn.loss import mse, mse_prime
+from liltorch.nn.loss import mse_loss, mse_grad
 from liltorch.nn.network import Network
 
 
 if __name__ == "__main__":
     lr = 0.1
-    epochs = 1000
+    epochs = 5
     x_train = np.array([[[0,0]], [[0,1]], [[1,0]], [[1,1]]])
     y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
 
@@ -26,10 +26,10 @@ if __name__ == "__main__":
 
             # forward
             output = model.forward(sample)
-            epoch_loss += mse(target, output)
+            epoch_loss += mse_loss(target, output)
 
             # backward pass
-            error = mse_prime(target, output)
+            error = mse_grad(target, output)
             model.backward(error)
 
         print(f'Epoch {epoch} -> Average loss {epoch_loss/len(x_train)}')

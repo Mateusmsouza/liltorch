@@ -13,7 +13,7 @@ class Network:
         for layer in self.layers:
             x = layer.forward(x)
         return x
-    
+
     def backward(self, error):
         for layer in reversed(self.layers):
                 error = layer.backward(error, self.lr)
