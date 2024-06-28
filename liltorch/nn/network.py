@@ -1,7 +1,7 @@
 from liltorch.nn.layer import Layer
 
-class Network:
 
+class Network:
     def __init__(self, lr: float) -> None:
         self.layers = []
         self.lr = lr
@@ -16,4 +16,4 @@ class Network:
 
     def backward(self, error):
         for layer in reversed(self.layers):
-                error = layer.backward(error, self.lr)
+            error = layer.backward(error, self.lr)
