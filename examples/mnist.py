@@ -7,16 +7,16 @@ from keras.datasets import mnist
 from keras.utils import to_categorical
 
 from liltorch.nn.fully_connected import FullyConnectedLayer
-from liltorch.nn.activation import ActivationLayerTanh
+from liltorch.nn.activation import Tanh
 from liltorch.nn.network import Network
 
-from liltorch.nn.loss import mse_loss, mse_grad
+from liltorch.nn.loss import MeanSquaredError
 import numpy as np
 
 # load MNIST from server
 lr = 0.1
-epochs = 5
-batch_size = 16
+epochs = 20
+batch_size = 4
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 x_train = x_train.reshape(x_train.shape[0], 28*28)
@@ -30,55 +30,46 @@ x_test /= 255
 y_test = to_categorical(y_test)
 
 print(f'shape of xtrain {x_train.shape} xtrain {y_train.shape} and xtrain {x_test.shape} xtest {x_test.shape}')
+
 # build model
 model = Network(lr=lr)
 model.add(FullyConnectedLayer(28*28, 100))
-model.add(ActivationLayerTanh())
+model.add(Tanh())
 model.add(FullyConnectedLayer(100, 50))
-model.add(ActivationLayerTanh())
+model.add(Tanh())
 model.add(FullyConnectedLayer(50, 10))
-model.add(ActivationLayerTanh())
+model.add(Tanh())
 
 # training
 for epoch in range(epochs):
     epoch_loss = 0
     dataset_size = len(x_train)
-    batch_begin = 0
-    batch_end = batch_size - 1
-    while batch_begin < dataset_size:
+    correct = 0
+    criterion = MeanSquaredError()
+    for batch_begin in range(0, dataset_size, batch_size):
+        batch_end = min(batch_begin + batch_size, dataset_size)
         data = x_train[batch_begin:batch_end]
         target = y_train[batch_begin:batch_end]
-        #print(f"batch from {batch_begin} to {batch_end}")
 
         # forward
         output = model.forward(data)
-        epoch_loss += mse_loss(target, output)
+        epoch_loss += criterion.foward(target, output)
 
         # backward pass
-        error = mse_grad(target, output)
+        error = criterion.backward(target, output)
         model.backward(error)
-
-        batch_begin = batch_end
-        batch_end += batch_size
-        batch_end = min(dataset_size, batch_end)
-
-    print(f'Epoch {epoch} -> Average loss {epoch_loss/len(x_train)}')
+        correct += np.sum((np.argmax(output, axis=1) == np.argmax(target, axis=1)))
+    print(f'Epoch {epoch} -> Average loss {epoch_loss/dataset_size} / Average Accuracy {(correct/dataset_size):.4f}')
 
 # testing
 correct = 0
 dataset_size = len(x_test)
-batch_begin = 0
-batch_end = batch_size - 1
-
-while batch_begin < dataset_size -1:
+for batch_begin in range(0, dataset_size, batch_size):
+    batch_end = min(batch_begin + batch_size, dataset_size)
     data = x_test[batch_begin:batch_end]
     target = y_test[batch_begin:batch_end]
-    #print(f"batch from {batch_begin} to {batch_end}")
+
     output = model.forward(data)
-    correct += np.sum((np.argmax(output, axis=1) == np.argmax(target)))
+    correct += np.sum((np.argmax(output, axis=1) == np.argmax(target, axis=1)))
 
-    batch_begin = batch_end
-    batch_end += batch_size
-    batch_end = min(dataset_size, batch_end)
-
-print(f'Test Accuracy: {correct/dataset_size}')
+print(f'Test Accuracy: {(correct/dataset_size):.4f}')

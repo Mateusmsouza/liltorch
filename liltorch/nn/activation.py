@@ -3,7 +3,7 @@ import numpy as np
 from liltorch.nn.layer import Layer
 
 
-class ActivationLayerTanh(Layer):
+class Tanh(Layer):
 
     def forward(self, input_data):
         '''fordward pass using tanh activation'''
