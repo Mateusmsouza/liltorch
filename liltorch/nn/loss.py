@@ -1,4 +1,13 @@
+"""
+This module implements commonly used loss functions for neural networks.
+
+Loss functions measure the difference between the model's predictions and the ground truth labels.
+Minimizing the loss function during training helps the model learn accurate representations.
+This module provides functions for popular loss functions like mean squared error, cross-entropy, etc.
+"""
+
 import numpy as np
+
 
 class MeanSquaredError:
     """
