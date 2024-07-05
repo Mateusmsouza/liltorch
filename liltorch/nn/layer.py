@@ -5,6 +5,8 @@ class Layer:
 
     input = None
     output = None
+    weights = None
+    bias = None
 
     def foward(self, input):
         raise NotImplementedError

@@ -28,6 +28,9 @@ class FullyConnectedLayer(Layer):
         """
         self.weights = np.random.rand(input_size, output_size) - 0.5
         self.bias = np.random.rand(1, output_size) - 0.5
+        self.local_gradients_w = None
+        self.local_gradients_b = None
+
 
     def forward(self, input_data):
         """
@@ -67,11 +70,7 @@ class FullyConnectedLayer(Layer):
         downstream_gradients = np.dot(upstream_gradients, self.weights.T)
 
         # Calculate local gradients for weights and biases (dL/dW and dL/dB )
-        local_gradients_w = np.dot(self.input.T, upstream_gradients)
-        local_gradients_b = np.sum(upstream_gradients, axis=0, keepdims=True)
-
-        # Update weights and biases using the gradients and learning rate
-        self.weights -= lr * local_gradients_w
-        self.bias -= lr * local_gradients_b
+        self.local_gradients_w = np.dot(self.input.T, upstream_gradients)
+        self.local_gradients_b = np.sum(upstream_gradients, axis=0, keepdims=True)
 
         return downstream_gradients
