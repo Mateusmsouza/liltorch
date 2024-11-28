@@ -15,8 +15,8 @@ import numpy as np
 
 # load MNIST from server
 lr = 0.1
-epochs = 20
-batch_size = 4
+epochs = 10
+batch_size = 16
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 x_train = x_train.reshape(x_train.shape[0], 28*28)
@@ -53,7 +53,7 @@ for epoch in range(epochs):
 
         # forward
         output = model.forward(data)
-        epoch_loss += criterion.foward(target, output)
+        epoch_loss += criterion.forward(target, output)
 
         # backward pass
         error = criterion.backward(target, output)
