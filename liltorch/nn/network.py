@@ -1,5 +1,8 @@
 import numpy as np
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 from liltorch.nn.layer import Layer
 
 
