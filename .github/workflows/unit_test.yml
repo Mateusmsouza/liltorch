@@ -1,0 +1,45 @@
+name: Tests and Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements.dev.txt
+          pip install coverage codecov
+
+      - name: Run tests with coverage
+        run: |
+          make test
+          coverage xml
+
+      - name: Generate coverage badge
+        run: |
+          pip install coverage-badge
+          coverage-badge -o coverage.svg -f
+
+      - name: Commit badge
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add coverage.svg
+          git commit -m "Update coverage badge" || echo "No changes to commit"
+          git push

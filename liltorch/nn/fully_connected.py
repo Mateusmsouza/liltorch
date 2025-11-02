@@ -31,7 +31,6 @@ class FullyConnectedLayer(Layer):
         self.local_gradients_w = None
         self.local_gradients_b = None
 
-
     def forward(self, input_data):
         """
         Performs the forward pass through the layer.
