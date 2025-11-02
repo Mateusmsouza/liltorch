@@ -7,3 +7,6 @@ coverage:
 
 lint:
 	black liltorch
+
+local_docs_server:
+	cd documentation && mkdocs serve -w .
