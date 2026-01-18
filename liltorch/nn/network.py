@@ -1,3 +1,4 @@
+import numpy as np
 from liltorch.nn.layer import Layer
 
 

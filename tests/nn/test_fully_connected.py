@@ -14,3 +14,17 @@ def test_fc_forward():
     fake_data = np.random.rand(1, 2)
     expected = np.dot(fake_data, weights) + bias
     assert expected == fc.forward(fake_data)
+
+def test_fc_backward():
+    """ fc layer backward receives upstrem gradients,
+    calculates local and downstream gradients then pass downstream"""
+    lr = 0.001
+    fc = FullyConnectedLayer(input_size=2, output_size=1)
+    weights = fc.weights
+    bias = fc.bias
+    fc.input = np.random.rand(1, 2)
+    fake_gradient = np.random.rand(1, 1)
+    expected_downstream_gradients = np.dot(fake_gradient, weights.T)
+
+    assert expected_downstream_gradients.all() == fc.backward(fake_gradient, lr).all()
+

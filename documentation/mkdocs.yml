@@ -1,4 +1,9 @@
 site_name: LilTorch
+nav:
+  - Home: index.md
+  - Api Reference: API-Reference.md
+  - Training Examples: Examples.md
+#  - About: about.md
 theme:
   name: mkdocs
   color_mode: auto

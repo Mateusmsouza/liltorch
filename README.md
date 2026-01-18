@@ -1,3 +1,5 @@
+![Coverage](./coverage.svg)
+
 # LilTorch
 
 ![Logo](documentation/docs/images/logo-torch.png)
